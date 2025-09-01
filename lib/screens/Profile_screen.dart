@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
+import 'Login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF292A6B),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu),
           onPressed: () {},
         ),
         title: const Text(
           'Profile',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                offset: Offset(1, 1),
-                blurRadius: 2,
-                color: Colors.black26,
-              ),
-            ],
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.04,
+          vertical: screenHeight * 0.02,
+        ),
         child: Column(
           children: [
-            // Profile Header Section
+           
             Container(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(screenWidth * 0.05),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -49,210 +48,204 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  // Profile Picture
                   CircleAvatar(
-                    radius: 50,
+                    radius: isLandscape ? screenHeight * 0.08 : screenWidth * 0.14,
                     backgroundColor: const Color(0xFF292A6B),
-                    child: const Icon(
+                    child: Icon(
                       Icons.person,
-                      size: 50,
+                      size: isLandscape ? screenHeight * 0.08 : screenWidth * 0.14,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  // User Name
-                  const Text(
-                    'John Doe',
+                  SizedBox(height: screenHeight * 0.02),
+                  Text(
+                    'Senith Kavishka',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: screenWidth * 0.06,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  // Email
+                  SizedBox(height: screenHeight * 0.005),
                   const Text(
-                    'john.doe@example.com',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                    'kavishkasenith@gmail.com',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
-                  const SizedBox(height: 16),
-                  // Stats Row
+                  SizedBox(height: screenHeight * 0.02),
+                 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildStatItem('Movies Watched', '127'),
-                      _buildStatItem('Favourites', '23'),
-                      _buildStatItem('Reviews', '15'),
+                      _buildStatItem('Movies Watched', '127', screenWidth, screenHeight),
+                      _buildStatItem('Favourites', '23', screenWidth, screenHeight),
+                      _buildStatItem('Reviews', '15', screenWidth, screenHeight),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: screenHeight * 0.03),
 
-            // Settings Section
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
+          
+            _buildSectionContainer(
+              context: context,
+              title: 'Settings',
+              items: [
+                _buildSettingItem(
+                  context: context,
+                  icon: Icons.notifications,
+                  title: 'Notifications',
+                  subtitle: 'Manage your notification preferences',
+                  trailing: Switch(
+                    value: true,
+                    onChanged: (value) {},
+                    activeColor: const Color(0xFF292A6B),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
+                ),
+                _buildSettingItem(
+                  context: context,
+                  icon: Icons.dark_mode,
+                  title: 'Dark Mode',
+                  subtitle: 'Switch between light and dark themes',
+                  trailing: Switch(
+                    value: false,
+                    onChanged: (value) {},
+                    activeColor: const Color(0xFF292A6B),
                   ),
-                  _buildSettingItem(
-                    icon: Icons.notifications,
-                    title: 'Notifications',
-                    subtitle: 'Manage your notification preferences',
-                    trailing: Switch(
-                      value: true,
-                      onChanged: (value) {},
-                      activeColor: const Color(0xFF292A6B),
-                    ),
-                  ),
-                  _buildSettingItem(
-                    icon: Icons.dark_mode,
-                    title: 'Dark Mode',
-                    subtitle: 'Switch between light and dark themes',
-                    trailing: Switch(
-                      value: false,
-                      onChanged: (value) {},
-                      activeColor: const Color(0xFF292A6B),
-                    ),
-                  ),
-
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: screenHeight * 0.03),
 
-            // Account Section
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Account',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                  _buildSettingItem(
-                    icon: Icons.person_outline,
-                    title: 'Edit Profile',
-                    subtitle: 'Update your personal information',
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  ),
-                  _buildSettingItem(
-                    icon: Icons.history,
-                    title: 'Watch History',
-                    subtitle: 'View your movie watching history',
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  ),
-                  _buildSettingItem(
-                    icon: Icons.star_outline,
-                    title: 'My Reviews',
-                    subtitle: 'See all your movie reviews',
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  ),
-
-                ],
-              ),
+           
+            _buildSectionContainer(
+              context: context,
+              title: 'Account',
+              items: [
+                _buildSettingItem(
+                  context: context,
+                  icon: Icons.person_outline,
+                  title: 'Edit Profile',
+                  subtitle: 'Update your personal information',
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                _buildSettingItem(
+                  context: context,
+                  icon: Icons.history,
+                  title: 'Watch History',
+                  subtitle: 'View your movie watching history',
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                _buildSettingItem(
+                  context: context,
+                  icon: Icons.star_outline,
+                  title: 'My Reviews',
+                  subtitle: 'See all your movie reviews',
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
 
-            // Logout Button
+            SizedBox(height: screenHeight * 0.03),
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                    (route) => false, 
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[400],
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Logout',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: screenWidth * 0.045,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: screenHeight * 0.03),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatItem(String label, String value) {
+  Widget _buildStatItem(String label, String value, double screenWidth, double screenHeight) {
     return Column(
       children: [
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF292A6B),
+            color: const Color(0xFF292A6B),
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: screenHeight * 0.005),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: screenWidth * 0.035, color: Colors.grey),
           textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
+  Widget _buildSectionContainer({
+    required BuildContext context,
+    required String title,
+    required List<Widget> items,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.headlineMedium?.color,
+              ),
+            ),
+          ),
+          ...items,
+        ],
+      ),
+    );
+  }
+
   Widget _buildSettingItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -265,23 +258,19 @@ class ProfileScreen extends StatelessWidget {
           color: const Color(0xFF292A6B).withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(
-          icon,
-          color: const Color(0xFF292A6B),
-          size: 20,
-        ),
+        child: Icon(icon, color: const Color(0xFF292A6B), size: 20),
       ),
       title: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w600,
-          color: Colors.black87,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
-          color: Colors.grey,
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
           fontSize: 12,
         ),
       ),
@@ -289,4 +278,4 @@ class ProfileScreen extends StatelessWidget {
       onTap: () {},
     );
   }
-} 
+}

@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Carousel slider package
-  carousel_slider: ^4.2.1
+ 
+ 
 
 dev_dependencies:
   flutter_test:
@@ -22,7 +22,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/Thebatman.jpeg
+    - assets/images/F1.jpg
+    - assets/images/inception-1.jpg
+    - assets/images/Warrior.jpeg
+    - assets/images/one-love.jpg
+    - assets/images/300.jpeg
+    - assets/images/interstellar.jpg
+    - assets/images/shawshank.jpeg
+    - assets/images/pulp_fiction.jpg
+    - assets/images/dark_knight.jpg
+    - assets/images/battinson.jpg
 
-  # Optional: add assets if you have images
-  # assets:
-  #   - assets/images/

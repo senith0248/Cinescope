@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
+import 'Homescreen.dart';
+import 'Favourites_screen.dart';
+import 'Profile_screen.dart';
 
-class MovieDetailScreen extends StatelessWidget {
+class MovieDetailScreen extends StatefulWidget {
   final String title;
   final double rating;
   final String synopsis;
+  final String poster;
+  final String year;
 
   const MovieDetailScreen({
     super.key,
     required this.title,
     required this.rating,
     required this.synopsis,
+    required this.poster,
+    required this.year,
   });
+
+  @override
+  State<MovieDetailScreen> createState() => _MovieDetailScreenState();
+}
+
+class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Poster Image
-          Image.network(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSKHRqA0OkiVvxqc9koNQjvK_CbJ9asDH_ZA&s",
+         
+          Image.asset(
+            widget.poster,
             height: 300,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
 
-          // Back Button (overlaid)
           SafeArea(
             child: IconButton(
               icon: const Icon(Icons.arrow_back, color: Color(0xFF292A6B), size: 28),
@@ -33,7 +46,6 @@ class MovieDetailScreen extends StatelessWidget {
             ),
           ),
 
-          // Content below image
           Container(
             margin: const EdgeInsets.only(top: 260),
             padding: const EdgeInsets.all(16.0),
@@ -45,9 +57,9 @@ class MovieDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title with Year
+                 
                   Text(
-                    "$title 2022",
+                    "${widget.title} ${widget.year}",
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -55,7 +67,6 @@ class MovieDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Movie Details Row
                   Row(
                     children: [
                       const Icon(Icons.schedule, size: 18, color: Colors.grey),
@@ -64,18 +75,18 @@ class MovieDetailScreen extends StatelessWidget {
                       const SizedBox(width: 16),
                       const Icon(Icons.star, size: 18, color: Colors.amber),
                       const SizedBox(width: 4),
-                      Text("$rating/10"),
+                      Text("${widget.rating}/10"),
                       const SizedBox(width: 16),
                       const Icon(Icons.calendar_today,
                           size: 18, color: Colors.grey),
                       const SizedBox(width: 4),
-                      const Text("March 4, 2022"),
+                      Text("March 4, ${widget.year}"),
                     ],
                   ),
 
                   const SizedBox(height: 16),
 
-                  // Genre Chips and Favorite Icon
+                 
                   Row(
                     children: [
                       const Chip(label: Text("Action")),
@@ -95,7 +106,7 @@ class MovieDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // Synopsis
+                
                   const Text(
                     "Synopsis",
                     style: TextStyle(
@@ -103,13 +114,13 @@ class MovieDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    synopsis,
+                    widget.synopsis,
                     style: const TextStyle(fontSize: 16, height: 1.5),
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Action Buttons
+                 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -133,13 +144,46 @@ class MovieDetailScreen extends StatelessWidget {
         ],
       ),
 
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF292A6B),
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          
+          
+          switch (index) {
+            case 0: // Home
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Homescreen(),
+                ),
+              );
+              break;
+            case 1: // Favourites
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FavouritesScreen(),
+                ),
+              );
+              break;
+            case 2: // Profile
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.home), label: 'Home'),

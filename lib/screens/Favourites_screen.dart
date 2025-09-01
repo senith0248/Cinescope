@@ -6,51 +6,56 @@ class FavouritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample favorite movies data
+    // favorite movies data with asset images
     final List<Map<String, dynamic>> favouriteMovies = [
       {
         'title': 'The Dark Knight',
         'rating': 9.0,
-        'imageUrl': 'https://via.placeholder.com/150',
+        'imagePath': 'assets/images/dark_knight.jpg',
+        'year': '2008',
         'synopsis': 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
       },
       {
         'title': 'Inception',
         'rating': 8.8,
-        'imageUrl': 'https://via.placeholder.com/150',
+        'imagePath': 'assets/images/inception-1.jpg',
+        'year': '2010',
         'synopsis': 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
       },
       {
         'title': 'Interstellar',
-        'rating': 8.6,
-        'imageUrl': 'https://via.placeholder.com/150',
+        'rating': 8.7,
+        'imagePath': 'assets/images/interstellar.jpg',
+        'year': '2014',
         'synopsis': 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
       },
       {
         'title': 'The Shawshank Redemption',
         'rating': 9.3,
-        'imageUrl': 'https://via.placeholder.com/150',
+        'imagePath': 'assets/images/shawshank.jpeg',
+        'year': '1994',
         'synopsis': 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
       },
       {
         'title': 'Pulp Fiction',
         'rating': 8.9,
-        'imageUrl': 'https://via.placeholder.com/150',
+        'imagePath': 'assets/images/pulp_fiction.jpg',
+        'year': '1994',
         'synopsis': 'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.',
       },
     ];
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF292A6B),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu),
           onPressed: () {},
         ),
         title: const Text(
           'Favourites',
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             shadows: [
               Shadow(
@@ -64,7 +69,7 @@ class FavouritesScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
+            icon: const Icon(Icons.search),
             onPressed: () {},
           ),
         ],
@@ -110,13 +115,14 @@ class FavouritesScreen extends StatelessWidget {
                   child: FavouriteMovieCard(
                     title: movie['title'],
                     rating: movie['rating'],
-                    imageUrl: movie['imageUrl'],
+                    imagePath: movie['imagePath'],
                     synopsis: movie['synopsis'],
+                    screenWidth: screenWidth,
+                    year: movie['year'],
                   ),
                 );
               },
             ),
-
     );
   }
 }
@@ -124,15 +130,19 @@ class FavouritesScreen extends StatelessWidget {
 class FavouriteMovieCard extends StatelessWidget {
   final String title;
   final double rating;
-  final String imageUrl;
+  final String imagePath;
   final String synopsis;
+  final double screenWidth;
+  final String year;
 
   const FavouriteMovieCard({
     super.key,
     required this.title,
     required this.rating,
-    required this.imageUrl,
+    required this.imagePath,
     required this.synopsis,
+    required this.screenWidth,
+    required this.year,
   });
 
   @override
@@ -151,6 +161,8 @@ class FavouriteMovieCard extends StatelessWidget {
                 title: title,
                 rating: rating,
                 synopsis: synopsis,
+                poster: imagePath,
+                year: year,
               ),
             ),
           );
@@ -160,26 +172,14 @@ class FavouriteMovieCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Row(
             children: [
-              // Movie poster
+             
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  imageUrl,
-                  width: 80,
-                  height: 120,
+                child: Image.asset(
+                  imagePath,
+                  width: screenWidth * 0.25,
+                  height: screenWidth * 0.38,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 80,
-                      height: 120,
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.movie,
-                        color: Colors.grey,
-                        size: 32,
-                      ),
-                    );
-                  },
                 ),
               ),
               const SizedBox(width: 16),
@@ -236,7 +236,6 @@ class FavouriteMovieCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Arrow icon
               const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey,
@@ -248,4 +247,4 @@ class FavouriteMovieCard extends StatelessWidget {
       ),
     );
   }
-} 
+}
